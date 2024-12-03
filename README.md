@@ -3,6 +3,7 @@ pass
 
 # Generate Call Graph - 나령, 선우
 ## Get checkout and build data
+* There are two methods to get data
 ### 1. Download all at once
 https://drive.google.com/drive/folders/1fSPvBw2tb71Q7yxI_5eHW7SrctnW48gC?usp=sharing   
 
