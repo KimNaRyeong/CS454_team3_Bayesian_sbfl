@@ -25,4 +25,24 @@ https://drive.google.com/drive/folders/1fSPvBw2tb71Q7yxI_5eHW7SrctnW48gC?usp=sha
 * Run Defects4J   
     ```python checkout_and_compile.py```
 
+### 3. Generate `.jar` files using 'ant'
+***jar files for Chart are available now. They are in jar_files directory. Below explanation is about how to make that directory.***
+* Download ant on the docker
+    ```
+    apt-get update
+    apt install ant
+    ```
+* Run the each shell script in ant_build directory for each project   
+    * Example
+        ```
+        bash ant_build/chart.sh
+        ```
+* Copy the jar files of source to jar_files directory
+    * Example
+        ```
+        python copy_jar_files/chart.py
+        ```
+    * Chart
+        * All jar files are in lib directory of each project directory
+
 
