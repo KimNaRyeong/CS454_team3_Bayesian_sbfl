@@ -1,3 +1,0 @@
-digraph G {
-  "org.jfree.chart$ChartColor#<clinit>()" -> "org.jfree.chart$ChartColor#createDefaultPaintArray()";
-}

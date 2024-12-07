@@ -2,6 +2,7 @@ import os
 import json
 import networkx as nx
 import re
+import matplotlib.pyplot as plt
 
 def parse_node_format(node):
     """
@@ -10,33 +11,46 @@ def parse_node_format(node):
     :param node: Original node string
     :return: Formatted node string
     """
-    if "<" in node and ">" in node:
-        # Remove only the outermost < and >
-        node = re.sub(r"^<+|>+$", "", node)
+    node = node.strip('<>')
+    until_class, method = node.split(": ")
+    packages = ".".join(until_class.split(".")[:-1])
+    class_name = until_class.split(".")[-1]
+    formated_until_class = packages+"$"+class_name
 
-        # Split the node into parts by ':' or '#'
-        if ":" in node:
-            class_part, method_part = node.split(":", 1)
-        elif "#" in node:
-            class_part, method_part = node.split("#", 1)
-        else:
-            class_part, method_part = node, ""
+    method = method.split()[-1]
+    formated_method = formated_until_class+'#'+method
+    # print(formated_method)
 
-        # Extract the method name (last word)
-        method_name = method_part.split()[-1].strip()  # Remove spaces
+    # if '$' in node and (node.startswith('org.jfree.data') or node.startswith('org.jfree.chart')):
+    #     print(node)
+                        
+    # if "<" in node and ">" in node:
+    #     # Remove only the outermost < and >
+    #     node = re.sub(r"^<+|>+$", "", node)
 
-        # Replace the third '.' with '$'
-        parts = class_part.split(".")
-        if len(parts) > 3:
-            # Join the first 3 parts with '.', then append the rest with '$' inserted
-            formatted_class = ".".join(parts[:3]) + "$" + ".".join(parts[3:])
-        else:
-            formatted_class = class_part  # If less than 3 parts, no change
+    #     # Split the node into parts by ':' or '#'
+    #     if ":" in node:
+    #         class_part, method_part = node.split(":", 1)
+    #     elif "#" in node:
+    #         class_part, method_part = node.split("#", 1)
+    #     else:
+    #         class_part, method_part = node, ""
 
-        # Construct the formatted node
-        formatted_node = f"{formatted_class}#{method_name}"
-        return formatted_node
-    return node
+    #     # Extract the method name (last word)
+    #     method_name = method_part.split()[-1].strip()  # Remove spaces
+
+    #     # Replace the third '.' with '$'
+    #     parts = class_part.split(".")
+    #     if len(parts) > 3:
+    #         # Join the first 3 parts with '.', then append the rest with '$' inserted
+    #         formatted_class = ".".join(parts[:3]) + "$" + ".".join(parts[3:])
+    #     else:
+    #         formatted_class = class_part  # If less than 3 parts, no change
+
+    #     # Construct the formatted node
+    #     formatted_node = f"{formatted_class}#{method_name}"
+    #     return formatted_node
+    return formated_method
 
 
 def read_dot_file(file_path):
@@ -52,10 +66,19 @@ def read_dot_file(file_path):
     for line in lines:
         line = line.strip()
         if '->' in line:
-            nodes = line.split('->')
-            source = parse_node_format(nodes[0].strip().strip('"'))
-            target = parse_node_format(nodes[1].strip().strip('";'))
+            source, target = line.split('->')
+            # print("----------------------")
+            # print(source)
+            # print(source.strip().strip('"'))
+            source = parse_node_format(source.strip().strip('"'))
+            
+            # print("-----------------------------")
+            # print(target)
+            # print(target.strip().strip('";'))
+            target = parse_node_format(target.strip().strip('";'))
             edges.append((source, target))
+            
+            # print("--------------------------")
     return edges
 
 def create_filtered_dag(edges, valid_nodes):
@@ -68,23 +91,45 @@ def create_filtered_dag(edges, valid_nodes):
     :return: Filtered DAG
     """
     # Build the original graph
-    graph = nx.DiGraph()
-    graph.add_edges_from(edges)
+    # graph = nx.DiGraph()
+    # graph.add_edges_from(edges)
 
     # Create a new DAG containing only valid nodes
     filtered_dag = nx.DiGraph()
 
     # Iterate through all pairs of valid nodes
-    for source in valid_nodes:
-        for target in valid_nodes:
-            if source != target:  # Avoid self-loops
-                # Ensure both source and target are in the graph
-                if source in graph and target in graph:
-                    # Check if a path exists between source and target in the original graph
-                    if nx.has_path(graph, source, target):
-                        # If a path exists, add a direct edge between source and target
-                        filtered_dag.add_edge(target, source)
+    for source, target in edges:
+        # if source not in valid_nodes:
+        #     print(source)
+        #     # pass
+        # if target not in valid_nodes:
+        #     print(target)
+        #     # pass
+        if source in valid_nodes and target in valid_nodes and source != target:
+            # print(source)
+            if not filtered_dag.has_edge(target, source):
+                filtered_dag.add_edge(target, source)
+        
+    # nx.draw(filtered_dag, with_labels=True, node_color="lightblue", edge_color="gray", node_size=2000, font_size=15)
+    # plt.title("Example Graph Visualization")
+    # # plt.show()
+    # plt.savefig("./graph.png", format="png", dpi=300)  # 저장 파일명과 포맷 설정
+    # plt.close()
+    # for source in valid_nodes:
+    #     for target in valid_nodes:
+    #         if source != target:  # Avoid self-loops
+    #             # Ensure both source and target are in the graph
+    #             if source in graph and target in graph:
+    #                 # Check if a path exists between source and target in the original graph
+    #                 if nx.has_path(graph, source, target):
+    #                     # If a path exists, add a direct edge between source and target
+    #                     filtered_dag.add_edge(target, source)
+    #             else:
+    #                 print(source)
+    #                 print(target)
+    #                 print("-----------------")
 
+    
     return filtered_dag
 
 def save_dag_to_dot(dag, output_file):
@@ -100,9 +145,13 @@ def save_dag_to_dot(dag, output_file):
         file.write("}\n")
 
 # Paths
-input_folder = '/root/workspace/CS454_team3_Bayesian_sbfl/sootOutput'
-output_folder = '/root/workspace/CS454_team3_Bayesian_sbfl/sootDAG_filtered'
-spectrum_file = '/root/workspace/CS454_team3_Bayesian_sbfl/method_level_spectrums.json'
+# input_folder = '/root/workspace/CS454_team3_Bayesian_sbfl/sootOutput'
+# output_folder = '/root/workspace/CS454_team3_Bayesian_sbfl/sootDAG_filtered'
+# spectrum_file = '/root/workspace/CS454_team3_Bayesian_sbfl/method_level_spectrums.json'
+
+input_folder = './sootOutput'
+output_folder = './sootDAG_filtered'
+spectrum_file = './method_level_spectrums.json'
 
 # Load method level spectrums
 with open(spectrum_file, 'r') as file:
@@ -115,10 +164,15 @@ os.makedirs(output_folder, exist_ok=True)
 files_in_input_folder = {f.lower(): f for f in os.listdir(input_folder)}
 
 # Iterate through all charts in the spectrum data
-for chart_key, methods in spectrum_data.items():
+# for chart_key, methods in spectrum_data.items():
+for project, methods in spectrum_data.items():
+    # if not chart_key.startswith('Chart'):
+    #     continue
     # Map Chart-1 to chart1_dependency_graph.dot
-    chart_index = chart_key.split("-")[1]
-    expected_file_name = f"Chart{chart_index}_dependency_graph.dot".lower()
+    # if chart_key != "Chart-1":
+    #     continue
+    pid, vid = project.split("-")
+    expected_file_name = f"{pid}{vid}_dependency_graph.dot".lower()
 
     # Check for case-insensitive match
     actual_file_name = files_in_input_folder.get(expected_file_name)
@@ -134,14 +188,30 @@ for chart_key, methods in spectrum_data.items():
         continue
     # Read edges from the .dot file
     edges = read_dot_file(input_file)
+    # for edge in edges[:10]:
+    #     print(edge)
+    # print(edges)
 
     # Extract valid nodes for this chart
     valid_nodes = set(methods.keys())
 
     # Create a filtered DAG based on valid nodes
     filtered_dag = create_filtered_dag(edges, valid_nodes)
+    if nx.is_directed_acyclic_graph(filtered_dag) and len(filtered_dag.nodes) > 0:
+        print(pid, vid)
+        save_dag_to_dot(filtered_dag, output_file)
 
+        print(f"Processed {actual_file_name} and saved to {output_file}")
+    # else:
+    #     cycles = list(nx.simple_cycles(filtered_dag))
+    #     print("Cycles detected:")
+    #     for cycle in cycles:
+    #         for edge in cycle:
+    #             print(edge)
+    #         print("--------------------")
+    #     print(len(cycles))
+                # print(f"Edge: {edge[0]} -> {edge[1]}")
     # Save the filtered DAG to the output folder
-    save_dag_to_dot(filtered_dag, output_file)
+    # save_dag_to_dot(filtered_dag, output_file)
 
-    print(f"Processed {actual_file_name} and saved to {output_file}")
+    # print(f"Processed {actual_file_name} and saved to {output_file}")
