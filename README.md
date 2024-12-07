@@ -3,6 +3,7 @@ pass
 
 # Generate Call Graph - 나령, 선우
 ## Get checkout and build data
+* There are two methods to get data
 ### 1. Download all at once
 https://drive.google.com/drive/folders/1fSPvBw2tb71Q7yxI_5eHW7SrctnW48gC?usp=sharing   
 
@@ -44,5 +45,11 @@ https://drive.google.com/drive/folders/1fSPvBw2tb71Q7yxI_5eHW7SrctnW48gC?usp=sha
         ```
     * Chart
         * All jar files are in lib directory of each project directory
-
-
+    * Lang
+        * Some bugs which are failed to build are excepted
+        * The list of that faild bugs are in `ant_build/not_built.txt`
+    * Math
+        * Build is failed with default settings.
+        * Script `ant_build/math.sh`:
+            * Download Junit.jar directrly
+            * Add an option to the command to allow the build process to continue even if tests fail
