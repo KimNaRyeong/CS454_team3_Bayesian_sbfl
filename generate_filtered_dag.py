@@ -81,56 +81,74 @@ def read_dot_file(file_path):
             # print("--------------------------")
     return edges
 
-def create_filtered_dag(edges, valid_nodes):
-    """
-    Creates a filtered DAG based on valid nodes in the method level spectrums.
-    Includes edges only where both source and target are in valid_nodes,
-    skipping intermediate nodes.
-    :param edges: List of (source, target) edges
-    :param valid_nodes: Set of valid method names from method level spectrum
-    :return: Filtered DAG
-    """
-    # Build the original graph
-    # graph = nx.DiGraph()
-    # graph.add_edges_from(edges)
 
-    # Create a new DAG containing only valid nodes
-    filtered_dag = nx.DiGraph()
+# def create_filtered_dag(edges, valid_nodes):
+#     """
+#     Creates a filtered DAG based on valid nodes in the method level spectrums.
+#     Includes edges only where both source and target are in valid_nodes,
+#     skipping intermediate nodes.
+#     :param edges: List of (source, target) edges
+#     :param valid_nodes: Set of valid method names from method level spectrum
+#     :return: Filtered DAG
+#     """
+#     # Build the original graph
+#     # graph = nx.DiGraph()
+#     # graph.add_edges_from(edges)
 
-    # Iterate through all pairs of valid nodes
-    for source, target in edges:
-        # if source not in valid_nodes:
-        #     print(source)
-        #     # pass
-        # if target not in valid_nodes:
-        #     print(target)
-        #     # pass
-        if source in valid_nodes and target in valid_nodes and source != target:
-            # print(source)
-            if not filtered_dag.has_edge(source, target):
-                filtered_dag.add_edge(source, target)
+#     # Create a new DAG containing only valid nodes
+#     filtered_dag = nx.DiGraph()
+
+#     # Iterate through all pairs of valid nodes
+#     for source, target in edges:
+#         # if source not in valid_nodes:
+#         #     print(source)
+#         #     # pass
+#         # if target not in valid_nodes:
+#         #     print(target)
+#         #     # pass
+#         if source in valid_nodes and target in valid_nodes and source != target:
+#             # print(source)
+#             if not filtered_dag.has_edge(source, target):
+#                 filtered_dag.add_edge(source, target)
         
-    # nx.draw(filtered_dag, with_labels=True, node_color="lightblue", edge_color="gray", node_size=2000, font_size=15)
-    # plt.title("Example Graph Visualization")
-    # # plt.show()
-    # plt.savefig("./graph.png", format="png", dpi=300)  # 저장 파일명과 포맷 설정
-    # plt.close()
-    # for source in valid_nodes:
-    #     for target in valid_nodes:
-    #         if source != target:  # Avoid self-loops
-    #             # Ensure both source and target are in the graph
-    #             if source in graph and target in graph:
-    #                 # Check if a path exists between source and target in the original graph
-    #                 if nx.has_path(graph, source, target):
-    #                     # If a path exists, add a direct edge between source and target
-    #                     filtered_dag.add_edge(target, source)
-    #             else:
-    #                 print(source)
-    #                 print(target)
-    #                 print("-----------------")
+#     # nx.draw(filtered_dag, with_labels=True, node_color="lightblue", edge_color="gray", node_size=2000, font_size=15)
+#     # plt.title("Example Graph Visualization")
+#     # # plt.show()
+#     # plt.savefig("./graph.png", format="png", dpi=300)  # 저장 파일명과 포맷 설정
+#     # plt.close()
+#     # for source in valid_nodes:
+#     #     for target in valid_nodes:
+#     #         if source != target:  # Avoid self-loops
+#     #             # Ensure both source and target are in the graph
+#     #             if source in graph and target in graph:
+#     #                 # Check if a path exists between source and target in the original graph
+#     #                 if nx.has_path(graph, source, target):
+#     #                     # If a path exists, add a direct edge between source and target
+#     #                     filtered_dag.add_edge(target, source)
+#     #             else:
+#     #                 print(source)
+#     #                 print(target)
+#     #                 print("-----------------")
 
     
-    return filtered_dag
+#     return filtered_dag
+
+def create_filtered_dag(edges, valid_nodes):
+    original = nx.DiGraph()
+    edges = [(u, v) for u, v in edges if u in valid_nodes and v in valid_nodes]
+
+    original.add_edges_from(edges)
+    
+    path_exists = dict(nx.all_pairs_shortest_path_length(original))
+
+    projected_graph = nx.DiGraph()
+    for source in valid_nodes:
+        for target in valid_nodes:
+            if source != target and target in path_exists.get(source, {}):
+                projected_graph.add_edge(source, target)
+
+    return projected_graph
+
 
 def save_dag_to_dot(dag, output_file):
     """
@@ -198,11 +216,14 @@ for project, methods in spectrum_data.items():
 
     # Create a filtered DAG based on valid nodes
     filtered_dag = create_filtered_dag(edges, valid_nodes)
-    if nx.is_directed_acyclic_graph(filtered_dag) and len(filtered_dag.nodes) > 0:
-        print(pid, vid)
-        save_dag_to_dot(filtered_dag, output_file)
+    # if nx.is_directed_acyclic_graph(filtered_dag) and len(filtered_dag.nodes) > 0:
+    #     print(pid, vid)
+    #     save_dag_to_dot(filtered_dag, output_file)
 
-        print(f"Processed {output_file_name} and saved to {output_file}")
+    #     print(f"Processed {output_file_name} and saved to {output_file}")
+    print(pid, vid)
+    save_dag_to_dot(filtered_dag, output_file)
+    print(f"Processed {output_file_name} and saved to {output_file}")
     # else:
     #     cycles = list(nx.simple_cycles(filtered_dag))
     #     print("Cycles detected:")

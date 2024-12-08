@@ -57,6 +57,7 @@ def adjust_tarantula_values(bn, spectrum_data):
 
         if node in spectrum_data:
             tarantula = spectrum_data[node]["tarantula"]
+            # adjusted_data[node]["tarantula"] = tarantula*(1 - failure_probability)
             adjusted_data[node]["tarantula"] = tarantula*(1 - failure_probability)
 
     return adjusted_data
