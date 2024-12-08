@@ -1,9 +1,0 @@
-digraph G {
-  "org.jfree.chart.util$ShapeUtilities#equal(java.awt.geom.GeneralPath,java.awt.geom.GeneralPath)" -> "org.jfree.chart.util$ShapeUtilities#equal(java.awt.Shape,java.awt.Shape)";
-  "org.jfree.chart.util$ShapeUtilities#equal(java.awt.geom.Ellipse2D,java.awt.geom.Ellipse2D)" -> "org.jfree.chart.util$ShapeUtilities#equal(java.awt.Shape,java.awt.Shape)";
-  "org.jfree.chart.util$ShapeUtilities#equal(java.awt.Polygon,java.awt.Polygon)" -> "org.jfree.chart.util$ShapeUtilities#equal(java.awt.Shape,java.awt.Shape)";
-  "org.jfree.chart.util$ShapeUtilities#<clinit>()" -> "org.jfree.chart.util$ShapeUtilities#equal(java.awt.Shape,java.awt.Shape)";
-  "org.jfree.chart.util$ShapeUtilities#<clinit>()" -> "org.jfree.chart.util$ShapeUtilities#createDiagonalCross(float,float)";
-  "org.jfree.chart.util$ShapeUtilities#equal(java.awt.geom.Arc2D,java.awt.geom.Arc2D)" -> "org.jfree.chart.util$ShapeUtilities#equal(java.awt.Shape,java.awt.Shape)";
-  "org.jfree.chart.util$ShapeUtilities#equal(java.awt.geom.Line2D,java.awt.geom.Line2D)" -> "org.jfree.chart.util$ShapeUtilities#equal(java.awt.Shape,java.awt.Shape)";
-}

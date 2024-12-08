@@ -107,8 +107,8 @@ def create_filtered_dag(edges, valid_nodes):
         #     # pass
         if source in valid_nodes and target in valid_nodes and source != target:
             # print(source)
-            if not filtered_dag.has_edge(target, source):
-                filtered_dag.add_edge(target, source)
+            if not filtered_dag.has_edge(source, target):
+                filtered_dag.add_edge(source, target)
         
     # nx.draw(filtered_dag, with_labels=True, node_color="lightblue", edge_color="gray", node_size=2000, font_size=15)
     # plt.title("Example Graph Visualization")
@@ -173,6 +173,7 @@ for project, methods in spectrum_data.items():
     #     continue
     pid, vid = project.split("-")
     expected_file_name = f"{pid}{vid}_dependency_graph.dot".lower()
+    output_file_name = f"{project}_dependency_graph.dot"
 
     # Check for case-insensitive match
     actual_file_name = files_in_input_folder.get(expected_file_name)
@@ -181,7 +182,7 @@ for project, methods in spectrum_data.items():
         continue
 
     input_file = os.path.join(input_folder, actual_file_name)
-    output_file = os.path.join(output_folder, actual_file_name)
+    output_file = os.path.join(output_folder, output_file_name)
 
     if os.path.exists(output_file):
         print(f"Output file {output_file} already exists. Skipping.")
@@ -201,7 +202,7 @@ for project, methods in spectrum_data.items():
         print(pid, vid)
         save_dag_to_dot(filtered_dag, output_file)
 
-        print(f"Processed {actual_file_name} and saved to {output_file}")
+        print(f"Processed {output_file_name} and saved to {output_file}")
     # else:
     #     cycles = list(nx.simple_cycles(filtered_dag))
     #     print("Cycles detected:")

@@ -1,5 +1,0 @@
-digraph G {
-  "org.jfree.chart$ChartColor#<clinit>()" [label="org.jfree.chart$ChartColor#<clinit>()\nP(Fail|Node)=1.00"];
-  "org.jfree.chart$ChartColor#createDefaultPaintArray()" [label="org.jfree.chart$ChartColor#createDefaultPaintArray()\nP(Fail|Node)=1.00"];
-  "org.jfree.chart$ChartColor#<clinit>()" -> "org.jfree.chart$ChartColor#createDefaultPaintArray()";
-}

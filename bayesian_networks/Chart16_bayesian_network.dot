@@ -1,5 +1,0 @@
-digraph G {
-  "org.jfree.data$DataUtilities#createNumberArray(double[])" [label="org.jfree.data$DataUtilities#createNumberArray(double[])\nP(Fail|Node)=0.00"];
-  "org.jfree.data$DataUtilities#createNumberArray2D(double[][])" [label="org.jfree.data$DataUtilities#createNumberArray2D(double[][])\nP(Fail|Node)=1.00"];
-  "org.jfree.data$DataUtilities#createNumberArray(double[])" -> "org.jfree.data$DataUtilities#createNumberArray2D(double[][])";
-}

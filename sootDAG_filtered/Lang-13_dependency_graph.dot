@@ -1,0 +1,5 @@
+digraph G {
+  "org.apache.commons.lang3$SerializationUtils#clone(java.io.Serializable)" -> "org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable)";
+  "org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable)" -> "org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable,java.io.OutputStream)";
+  "org.apache.commons.lang3$SerializationUtils#deserialize(byte[])" -> "org.apache.commons.lang3$SerializationUtils#deserialize(java.io.InputStream)";
+}
