@@ -42,8 +42,9 @@ def adjust_tarantula_values(bn, spectrum_data):
     for node in bn.nodes:
         # Extract tarantula value and failure probability
         node_data = bn.nodes[node]
-        tarantula = node_data.get("tarantula", 0.0)  # Default to 0.0 if missing
         failure_probability = node_data.get("p(fail|node)", 0.0)
+        # tarantula = adjusted_data.get("tarantula", 0.0)  # Default to 0.0 if missing
+        # failure_probability = node_data.get("p(fail|node)", 0.0)
 
         # # Apply adjustment to child nodes
         # for child in bn.successors(node):
@@ -53,8 +54,10 @@ def adjust_tarantula_values(bn, spectrum_data):
         #         child_tarantula = child_data.get("tarantula", 0.0)  # Default to 0.0 if missing
         #         child_data["tarantula"] = max(0.0, child_tarantula - adjustment)  # Ensure non-negative
         # # Update adjusted tarantula value in the spectrum data
+
         if node in spectrum_data:
-            adjusted_data[node]["tarantula"] = tarantula * (failure_probability)
+            tarantula = spectrum_data[node]["tarantula"]
+            adjusted_data[node]["tarantula"] = tarantula*(1 - failure_probability)
 
     return adjusted_data
 
@@ -81,7 +84,7 @@ adjusted_spectrum = spectrum_data.copy()  # Start with original spectrum data
 for file_name in os.listdir(bayesian_networks_folder):
     if file_name.endswith('.dot'):
         bn_file_path = os.path.join(bayesian_networks_folder, file_name)
-        chart_key = file_name.split('_')[0]  # Extract chart key (e.g., Chart1)
+        chart_key = file_name.split('_')[0]  # Extract chart key (e.g., Chart-1)
         
         # Load Bayesian Network
         bn = load_bayesian_network(bn_file_path)

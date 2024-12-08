@@ -71,14 +71,14 @@ def create_bayesian_network(pdg, coverage_df, failing_tests):
         node_index = coverage_df.index.get_loc(node)
 
         q = total_test - np.sum(X[is_failing, :][:, line_indices].any(axis=1)) # 자식 노드들에서 실패하지 않은 테스트 케이스의 수
-        p = total_test - np.sum(X[is_failing, :][:, line_indices].any(axis=1) | ~X[is_failing, :][:, node_index])
+        p = np.sum(X[is_failing, :][:, [node_index] + line_indices].any(axis=1)) - np.sum(X[is_failing, :][:, line_indices].any(axis=1))
+        # total_test - np.sum(X[is_failing, :][:, line_indices].any(axis=1)) - np.sum(~X[is_failing, :][:, node_index])
         # 자식 노드들에서 실패하지 않고, 현재 노드에서 실패한 테스트 케이스의 수 
         # print(p, q)
         prob = 0
         if q != 0:
             prob = p / q
-        if p == total_test:
-            prob = 0
+
 
         bayesian_network.add_node(node, failure_probability=prob)
 

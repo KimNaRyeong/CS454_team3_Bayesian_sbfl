@@ -19,6 +19,8 @@ def calculate_tarantula(data):
 
     # Avoid division by zero
     denominator = denominator_part1 + denominator_part2
+    suspiciousness = e_f * (1 if e_p == 0 else e_f/e_p)
+    return suspiciousness
     if denominator == 0:
         return 0.0
 
