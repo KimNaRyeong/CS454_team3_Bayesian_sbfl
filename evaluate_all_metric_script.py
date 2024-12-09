@@ -143,6 +143,13 @@ output_files = {
     "naryoung": os.path.join('./metric_value_json_output', 'method_level_spectrums_with_naryoung.json'),
     "donghan": os.path.join('./metric_value_json_output', 'method_level_spectrums_with_donghan.json'),
     "jihun": os.path.join('./metric_value_json_output', 'method_level_spectrums_with_jihun.json'),
+    "tarantula_b": os.path.join('./metric_value_json_output', 'bayesian_with_tarantula.json'),
+    "ochiai_b": os.path.join('./metric_value_json_output', 'bayesian_with_ochiai.json'),
+    "jaccard_b": os.path.join('./metric_value_json_output', 'bayesian_with_jaccard.json'),
+    "sunwoo_b": os.path.join('./metric_value_json_output', 'bayesian_with_sunwoo.json'),
+    "naryoung_b": os.path.join('./metric_value_json_output', 'bayesian_with_naryoung.json'),
+    "donghan_b": os.path.join('./metric_value_json_output', 'bayesian_with_donghan.json'),
+    "jihun_b": os.path.join('./metric_value_json_output', 'bayesian_with_jihun.json'),
 }
 
 # Directory containing bug data JSON files

@@ -88,8 +88,11 @@ def add_metrics_to_spectrum_separately(input_file, output_dir):
         "jihun": {},
     }
 
+
+
     # Iterate over each chart and its methods
     for chart, methods in spectrum_data.items():
+
         metrics_data["tarantula"][chart] = {}
         metrics_data["ochiai"][chart] = {}
         metrics_data["jaccard"][chart] = {}
