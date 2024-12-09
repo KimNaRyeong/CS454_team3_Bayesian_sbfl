@@ -30,24 +30,29 @@ def calculate_metrics(data):
     jaccard = safe_divide(e_f, e_f + e_p + n_f)
 
     # Sunwoo metric
-
+    x = 0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f))
+    y = 0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))
+    
+    suspiciousness_sunwoo = math.sqrt(safe_divide(math.sqrt(math.sqrt(x)) , (1.0 + math.sqrt(y))))
 
     # Naryoung
-
+    suspiciousness_naryoung = e_f * (1 if e_p == 0 else safe_divide(e_f, e_p))
 
     # Donghan
+    suspiciousness_donghan = (1 if 1 == 0 else ((1 if e_f == 0 else safe_divide(n_p * e_f, e_f)) * n_p) / 1) - ((n_f + e_p) + e_f)
 
-
-    # Jihun metric (Custom metric based on user's original formula)
-    # 주의: 이 공식이 의도한 대로 동작하는지 검증 필요
-    suspiciousness_jihun = ((n_f - n_p) - n_p) + (((e_p + (n_p - (e_f + n_p))) * 70) * e_f)
+    # Jihun
+    suspiciousness_jihun = (e_p - safe_divide(e_p, (n_f + 31))) - (safe_divide(30 + e_f, e_f))
 
     return {
         "tarantula": tarantula,
         "ochiai": ochiai,
         "jaccard": jaccard,
-        "jihun": suspiciousness_jihun,
 
+        "sunwoo": suspiciousness_sunwoo,
+        "naryoung": suspiciousness_naryoung,
+        "donghan": suspiciousness_donghan,
+        "jihun": suspiciousness_jihun,
     }
 
 def add_metrics_to_spectrum_separately(input_file, output_dir):
@@ -77,6 +82,9 @@ def add_metrics_to_spectrum_separately(input_file, output_dir):
         "ochiai": {},
         "jaccard": {},
 
+        "sunwoo": {},
+        "naryoung": {},
+        "donghan": {},
         "jihun": {},
     }
 
@@ -86,6 +94,7 @@ def add_metrics_to_spectrum_separately(input_file, output_dir):
         metrics_data["ochiai"][chart] = {}
         metrics_data["jaccard"][chart] = {}
 
+        metrics_data["donghan"][chart] = {}
         metrics_data["jihun"][chart] = {}
 
 
@@ -97,6 +106,9 @@ def add_metrics_to_spectrum_separately(input_file, output_dir):
             metrics_data["ochiai"][chart][method] = metrics["ochiai"]
             metrics_data["jaccard"][chart][method] = metrics["jaccard"]
 
+            metrics_data["sunwoo"][chart][method] = metrics["sunwoo"]
+            metrics_data["naryoung"][chart][method] = metrics["naryoung"]
+            metrics_data["donghan"][chart][method] = metrics["donghan"]
             metrics_data["jihun"][chart][method] = metrics["jihun"]
 
 
@@ -106,6 +118,9 @@ def add_metrics_to_spectrum_separately(input_file, output_dir):
         "ochiai": os.path.join(output_dir, 'method_level_spectrums_with_ochiai.json'),
         "jaccard": os.path.join(output_dir, 'method_level_spectrums_with_jaccard.json'),
 
+        "sunwoo": os.path.join(output_dir, 'method_level_spectrums_with_sunwoo.json'),
+        "naryoung": os.path.join(output_dir, 'method_level_spectrums_with_naryoung.json'),
+        "donghan": os.path.join(output_dir, 'method_level_spectrums_with_donghan.json'),
         "jihun": os.path.join(output_dir, 'method_level_spectrums_with_jihun.json'),
     }
 
