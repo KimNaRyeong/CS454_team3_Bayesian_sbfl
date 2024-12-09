@@ -94,6 +94,8 @@ def add_metrics_to_spectrum_separately(input_file, output_dir):
         metrics_data["ochiai"][chart] = {}
         metrics_data["jaccard"][chart] = {}
 
+        metrics_data["sunwoo"][chart] = {}
+        metrics_data["naryoung"][chart] = {}
         metrics_data["donghan"][chart] = {}
         metrics_data["jihun"][chart] = {}
 
