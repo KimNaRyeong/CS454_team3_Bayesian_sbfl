@@ -135,6 +135,7 @@ def read_dot_file(file_path):
 
 def create_filtered_dag(edges, valid_nodes):
     original = nx.DiGraph()
+    original.add_nodes_from(valid_nodes)
     edges = [(u, v) for u, v in edges if u in valid_nodes and v in valid_nodes]
 
     original.add_edges_from(edges)

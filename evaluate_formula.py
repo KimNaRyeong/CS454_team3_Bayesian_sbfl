@@ -2,8 +2,10 @@ import os
 import json
 import random
 
-spectrum_file = './adjusted_spectrum.json'
-# spectrum_file = './method_level_spectrums_with_tarantula.json'
+# spectrum_file = './adjusted_spectrum.json'
+spectrum_file = './method_level_spectrums_with_tarantula.json'
+spectrum_file = './method_level_spectrums_nar.json'
+# spectrum_file = './method_level_spectrums_dong.json'
 
 with open(spectrum_file, 'r') as f:
     method_level_spectrum = json.load(f)

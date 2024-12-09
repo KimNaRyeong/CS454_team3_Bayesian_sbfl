@@ -12,7 +12,12 @@ all_bugs = [
 ]
 
 total_bugs = len(all_bugs)
+# test_file = "./method_test_list_Math-2.json"
 
+# with open(test_file, 'r') as file:
+#     all_test = json.load(file)
+
+# total_test = len(all_test)
 
 # def calculate_failure_probability(spectrum_data):
 #     """
@@ -67,11 +72,34 @@ def create_bayesian_network(pdg, coverage_df, failing_tests):
             bayesian_network.add_node(node, failure_probability=0.0)
             continue
         successors = list(pdg.successors(node))
+        if len(successors) == 0: # 고립된 노드
+            prob = 0
+            a = np.sum(X[is_failing, :][:, [node_index]].any(axis=1))
+            if a != 0:
+                prob = 1
+            bayesian_network.add_node(node, failure_probability = prob)
+            continue
+        
+        # 연결된 노드
         line_indices = [coverage_df.index.get_loc(line) for line in successors if line in coverage_df.index]
         node_index = coverage_df.index.get_loc(node)
-
         b = total_test - np.sum(X[is_failing, :][:, line_indices].any(axis=1)) # 자식 노드들에서 실패하지 않은 테스트 케이스의 수
         a = np.sum(X[is_failing, :][:, [node_index] + line_indices].any(axis=1)) - np.sum(X[is_failing, :][:, line_indices].any(axis=1))
+
+        # a=0
+        # b=0
+        # for key, value in all_test.items():
+        #     if not isinstance(value, set):
+        #         value = set(value)
+        #     if value.isdisjoint(successors) or key not in failing_tests:
+        #         b += 1
+
+        # for key, value in all_test.items():
+        #     if not isinstance(value, set):
+        #         value = set(value)
+        #     if value.isdisjoint(successors) and key in failing_tests and node in value:
+        #         a += 1
+
         # total_test - np.sum(X[is_failing, :][:, line_indices].any(axis=1)) - np.sum(~X[is_failing, :][:, node_index])
         # 자식 노드들에서 실패하지 않고, 현재 노드에서 실패한 테스트 케이스의 수 
         # print(p, q)
@@ -83,7 +111,6 @@ def create_bayesian_network(pdg, coverage_df, failing_tests):
         prob = 0
         if b != 0:
             prob = a / b
-
 
         bayesian_network.add_node(node, failure_probability=prob)
 
