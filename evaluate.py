@@ -25,7 +25,7 @@ def evaluate_formula(formula):
         buggy_methods = [buggy_lines.split(':')[0] for buggy_lines in bug_info["buggy_lines"]]
         for method, spectra in spectrum.items():
             try:
-                sbfl_scores[method] = sbfl_scores[method] = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
+                sbfl_scores[method] = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
             except:
                 print(str(formula))
                 print("wrong")
@@ -84,7 +84,7 @@ def evaluate_weighted_formula(formula):
             try:
                 sbfl_score = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
                 try:
-                    weight = weights[method]
+                    weight = weight_for_bug[method]
                 except:
                     weight = 0.3
                 weighted_sbfl_scores[method] = sbfl_score*weight
@@ -155,9 +155,15 @@ weighted_jaccard_acc1, weighted_jaccard_acc3, weighted_jaccard_acc5, weighted_ja
 weighted_naryeong_acc1, weighted_naryeong_acc3, weighted_naryeong_acc5, weighted_naryeong_acc10, weighted_naryeong_wef = evaluate_weighted_formula(naryeong)
 weighted_sunwoo_acc1, weighted_sunwoo_acc3, weighted_sunwoo_acc5, weighted_sunwoo_acc10, weighted_sunwoo_wef = evaluate_weighted_formula(sunwoo)
 weighted_donghan_acc1, weighted_donghan_acc3, weighted_donghan_acc5, weighted_donghan_acc10, weighted_donghan_wef = evaluate_weighted_formula(donghan)
+print("trantula")
 print(weighted_trantula_acc1, weighted_trantula_acc3, weighted_trantula_acc5, weighted_trantula_acc10, weighted_trantula_wef)
+print("ochiai")
 print(weighted_ochiai_acc1, weighted_ochiai_acc3, weighted_ochiai_acc5, weighted_ochiai_acc10, weighted_ochiai_wef)
+print("jaccard")
 print(weighted_jaccard_acc1, weighted_jaccard_acc3, weighted_jaccard_acc5, weighted_jaccard_acc10, weighted_jaccard_wef)
+print("naryeong")
 print(weighted_naryeong_acc1, weighted_naryeong_acc3, weighted_naryeong_acc5, weighted_naryeong_acc10, weighted_naryeong_wef)
+print("sunsoo")
 print(weighted_sunwoo_acc1, weighted_sunwoo_acc3, weighted_sunwoo_acc5, weighted_sunwoo_acc10, weighted_sunwoo_wef)
+print("donghan")
 print(weighted_donghan_acc1, weighted_donghan_acc3, weighted_donghan_acc5, weighted_donghan_acc10, weighted_donghan_wef)

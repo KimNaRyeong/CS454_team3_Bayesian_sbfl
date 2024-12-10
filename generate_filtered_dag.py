@@ -11,14 +11,27 @@ def parse_node_format(node):
     :param node: Original node string
     :return: Formatted node string
     """
+    
     node = node.strip('<>')
     until_class, method = node.split(": ")
+
+    parsed_until_class = until_class.split('$')
+    without_digit_parsed_until_class = []
+    for i in parsed_until_class:
+        if not i.isdigit():
+            without_digit_parsed_until_class.append(i)
+
+    until_class = '$'.join(without_digit_parsed_until_class)
+
     packages = ".".join(until_class.split(".")[:-1])
     class_name = until_class.split(".")[-1]
     formated_until_class = packages+"$"+class_name
 
     method = method.split()[-1]
     formated_method = formated_until_class+'#'+method
+
+
+
     # print(formated_method)
 
     # if '$' in node and (node.startswith('org.jfree.data') or node.startswith('org.jfree.chart')):
@@ -184,7 +197,9 @@ files_in_input_folder = {f.lower(): f for f in os.listdir(input_folder)}
 
 # Iterate through all charts in the spectrum data
 # for chart_key, methods in spectrum_data.items():
-for project, methods in spectrum_data.items():
+all_bugs = [bug.split('_')[0] for bug in os.listdir('./sootDAG_filtered')]
+for project in all_bugs:
+    methods = spectrum_data[project]
     # if not chart_key.startswith('Chart'):
     #     continue
     # Map Chart-1 to chart1_dependency_graph.dot
@@ -205,7 +220,7 @@ for project, methods in spectrum_data.items():
 
     if os.path.exists(output_file):
         print(f"Output file {output_file} already exists. Skipping.")
-        continue
+        # continue
     # Read edges from the .dot file
     edges = read_dot_file(input_file)
     # for edge in edges[:10]:
@@ -222,9 +237,17 @@ for project, methods in spectrum_data.items():
     #     save_dag_to_dot(filtered_dag, output_file)
 
     #     print(f"Processed {output_file_name} and saved to {output_file}")
-    print(pid, vid)
-    save_dag_to_dot(filtered_dag, output_file)
-    print(f"Processed {output_file_name} and saved to {output_file}")
+    
+    
+    
+    # print(pid, vid)
+    # save_dag_to_dot(filtered_dag, output_file)
+    # print(f"Processed {output_file_name} and saved to {output_file}")
+    
+    
+    
+    
+    
     # else:
     #     cycles = list(nx.simple_cycles(filtered_dag))
     #     print("Cycles detected:")
