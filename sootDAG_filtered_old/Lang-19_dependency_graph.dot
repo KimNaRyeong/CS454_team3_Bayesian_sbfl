@@ -1,0 +1,8 @@
+digraph G {
+  "org.apache.commons.lang3.text.translate$AggregateTranslator#translate(java.lang.CharSequence,int,java.io.Writer)" -> "org.apache.commons.lang3.text.translate$NumericEntityUnescaper#translate(java.lang.CharSequence,int,java.io.Writer)";
+  "org.apache.commons.lang3.text.translate$CharSequenceTranslator#translate(java.lang.CharSequence,java.io.Writer)" -> "org.apache.commons.lang3.text.translate$NumericEntityUnescaper#translate(java.lang.CharSequence,int,java.io.Writer)";
+  "org.apache.commons.lang3.text.translate$CharSequenceTranslator#translate(java.lang.CharSequence,java.io.Writer)" -> "org.apache.commons.lang3.text.translate$AggregateTranslator#translate(java.lang.CharSequence,int,java.io.Writer)";
+  "org.apache.commons.lang3.text.translate$CharSequenceTranslator#translate(java.lang.CharSequence)" -> "org.apache.commons.lang3.text.translate$NumericEntityUnescaper#translate(java.lang.CharSequence,int,java.io.Writer)";
+  "org.apache.commons.lang3.text.translate$CharSequenceTranslator#translate(java.lang.CharSequence)" -> "org.apache.commons.lang3.text.translate$AggregateTranslator#translate(java.lang.CharSequence,int,java.io.Writer)";
+  "org.apache.commons.lang3.text.translate$CharSequenceTranslator#translate(java.lang.CharSequence)" -> "org.apache.commons.lang3.text.translate$CharSequenceTranslator#translate(java.lang.CharSequence,java.io.Writer)";
+}

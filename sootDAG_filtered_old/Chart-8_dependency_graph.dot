@@ -1,0 +1,25 @@
+digraph G {
+  "org.jfree.data.time$Week#evaluateAsYear(java.lang.String)" -> "org.jfree.data.time$RegularTimePeriod#<clinit>()";
+  "org.jfree.data.time$RegularTimePeriod#downsize(java.lang.Class)" -> "org.jfree.data.time$RegularTimePeriod#<clinit>()";
+  "org.jfree.data.time$RegularTimePeriod#toString()" -> "org.jfree.data.time$Week#getFirstMillisecond()";
+  "org.jfree.data.time$RegularTimePeriod#toString()" -> "org.jfree.data.time$RegularTimePeriod#getStart()";
+  "org.jfree.data.time$RegularTimePeriod#getStart()" -> "org.jfree.data.time$Week#getFirstMillisecond()";
+  "org.jfree.data.time$RegularTimePeriod#getMiddleMillisecond()" -> "org.jfree.data.time$Week#getLastMillisecond()";
+  "org.jfree.data.time$RegularTimePeriod#getMiddleMillisecond()" -> "org.jfree.data.time$Week#getFirstMillisecond()";
+  "org.jfree.data.time$Week#next()" -> "org.jfree.data.time$RegularTimePeriod#<clinit>()";
+  "org.jfree.data.time$Week#previous()" -> "org.jfree.data.time$RegularTimePeriod#<clinit>()";
+  "org.jfree.data.time$Week#peg(java.util.Calendar)" -> "org.jfree.data.time$Week#getLastMillisecond(java.util.Calendar)";
+  "org.jfree.data.time$Week#peg(java.util.Calendar)" -> "org.jfree.data.time$Week#getFirstMillisecond(java.util.Calendar)";
+  "org.jfree.data.time$Week#parseWeek(java.lang.String)" -> "org.jfree.data.time$Week#evaluateAsYear(java.lang.String)";
+  "org.jfree.data.time$Week#parseWeek(java.lang.String)" -> "org.jfree.data.time$Week#findSeparator(java.lang.String)";
+  "org.jfree.data.time$Week#parseWeek(java.lang.String)" -> "org.jfree.data.time$Week#stringToWeek(java.lang.String)";
+  "org.jfree.data.time$Week#parseWeek(java.lang.String)" -> "org.jfree.data.time$RegularTimePeriod#<clinit>()";
+  "org.jfree.data.time$RegularTimePeriod#createInstance(java.lang.Class,java.util.Date,java.util.TimeZone)" -> "org.jfree.data.time$RegularTimePeriod#<clinit>()";
+  "org.jfree.data.time$RegularTimePeriod#getEnd()" -> "org.jfree.data.time$Week#getLastMillisecond()";
+  "org.jfree.data.time$Week#compareTo(java.lang.Object)" -> "org.jfree.data.time$Week#getWeek()";
+  "org.jfree.data.time$Week#compareTo(java.lang.Object)" -> "org.jfree.data.time$RegularTimePeriod#<clinit>()";
+  "org.jfree.data.time$Week#compareTo(java.lang.Object)" -> "org.jfree.data.time$Week#getYear()";
+  "org.jfree.data.time$Week#getYear()" -> "org.jfree.data.time$RegularTimePeriod#<clinit>()";
+  "org.jfree.data.time$RegularTimePeriod#getMiddleMillisecond(java.util.Calendar)" -> "org.jfree.data.time$Week#getLastMillisecond(java.util.Calendar)";
+  "org.jfree.data.time$RegularTimePeriod#getMiddleMillisecond(java.util.Calendar)" -> "org.jfree.data.time$Week#getFirstMillisecond(java.util.Calendar)";
+}
