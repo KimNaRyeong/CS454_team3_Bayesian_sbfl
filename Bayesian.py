@@ -75,8 +75,7 @@ def create_bayesian_network(pdg, coverage_df, failing_tests):
         if len(successors) == 0: # 고립된 노드
             prob = 0
             a = np.sum(X[is_failing, :][:, [node_index]].any(axis=1))
-            if a != 0:
-                prob = 1
+            prob = a / total_test
             bayesian_network.add_node(node, failure_probability = prob)
             continue
         
