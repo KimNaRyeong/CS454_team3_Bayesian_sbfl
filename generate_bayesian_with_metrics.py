@@ -114,6 +114,7 @@ def add_metrics_to_spectrum_separately(input_file, output_dir, bayesian_networks
         "naryoung": {},
         "donghan": {},
         "jihun": {},
+        "bayesian": {},
     }
 
 
@@ -132,7 +133,7 @@ def add_metrics_to_spectrum_separately(input_file, output_dir, bayesian_networks
         metrics_data["naryoung"][chart] = {}
         metrics_data["donghan"][chart] = {}
         metrics_data["jihun"][chart] = {}
-
+        metrics_data["bayesian"][chart] = {}
 
         for method, data in methods.items():
             # Calculate all metrics
@@ -146,6 +147,7 @@ def add_metrics_to_spectrum_separately(input_file, output_dir, bayesian_networks
             metrics_data["naryoung"][chart][method] = metrics["naryoung"]
             metrics_data["donghan"][chart][method] = metrics["donghan"]
             metrics_data["jihun"][chart][method] = metrics["jihun"]
+            metrics_data["bayesian"][chart][method] = 0.3
         
         if os.path.isfile(bn_file_path):
             # print("hello")
@@ -157,14 +159,15 @@ def add_metrics_to_spectrum_separately(input_file, output_dir, bayesian_networks
                 if method in bn.nodes:
                     node_data = bn.nodes[method]
                     failure_probability = node_data.get("p(fail|node)", 0.0)
-                    metrics_data["tarantula"][chart][method] = metrics["tarantula"]*(1 + failure_probability)
-                    metrics_data["ochiai"][chart][method] = metrics["ochiai"]*(1 + failure_probability)
-                    metrics_data["jaccard"][chart][method] = metrics["jaccard"]*(1 + failure_probability)
+                    metrics_data["tarantula"][chart][method] = metrics["tarantula"]*(1 - 0.7*failure_probability)
+                    metrics_data["ochiai"][chart][method] = metrics["ochiai"]*(1 - 0.7*failure_probability)
+                    metrics_data["jaccard"][chart][method] = metrics["jaccard"]*(1 - 0.7*failure_probability)
 
-                    metrics_data["sunwoo"][chart][method] = metrics["sunwoo"]*(1 + failure_probability)
-                    metrics_data["naryoung"][chart][method] = metrics["naryoung"]*(1 + failure_probability)
-                    metrics_data["donghan"][chart][method] = metrics["donghan"]*(1 + failure_probability)
-                    metrics_data["jihun"][chart][method] = metrics["jihun"]*(1 + failure_probability)
+                    metrics_data["sunwoo"][chart][method] = metrics["sunwoo"]*(1 - 0.7*failure_probability)
+                    metrics_data["naryoung"][chart][method] = metrics["naryoung"]*(1 - 0.7*failure_probability)
+                    metrics_data["donghan"][chart][method] = metrics["donghan"]*(1 - 0.7*failure_probability)
+                    metrics_data["jihun"][chart][method] = metrics["jihun"]*(1 - 0.7*failure_probability)
+                    metrics_data["bayesian"][chart][method] = (1 - 0.7*failure_probability)
         
 
     output_files = {
@@ -176,6 +179,7 @@ def add_metrics_to_spectrum_separately(input_file, output_dir, bayesian_networks
         "naryoung": os.path.join(output_dir, 'bayesian_with_naryoung.json'),
         "donghan": os.path.join(output_dir, 'bayesian_with_donghan.json'),
         "jihun": os.path.join(output_dir, 'bayesian_with_jihun.json'),
+        "bayesian": os.path.join(output_dir, 'bayesian.json'),
     }
 
     # Save each metric data to its respective file
@@ -187,6 +191,6 @@ def add_metrics_to_spectrum_separately(input_file, output_dir, bayesian_networks
 # File paths
 input_file = './method_level_spectrums.json'
 output_dir = './metric_value_json_output'  # Directory to store individual metric files
-bayesian_networks_folder = './bayesian_networks'
+bayesian_networks_folder = './bayesian_networks_old'
 # Add metrics to the spectrum data and save to separate files
 add_metrics_to_spectrum_separately(input_file, output_dir, bayesian_networks_folder)

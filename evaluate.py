@@ -57,8 +57,13 @@ def evaluate_formula(formula):
 
 def evaluate_weighted_formula(formula):
     method_level_spectrum_file = './method_level_spectrums.json'
+    weight_file = './metric_value_json_output/bayesian.json'
+
     with open(method_level_spectrum_file, 'r') as f:
         method_level_spectrum = json.load(f)
+    with open(weight_file, 'r') as f:
+        weights = json.load(f)
+
     
     acc1 = 0
     acc3 = 0
@@ -72,17 +77,23 @@ def evaluate_weighted_formula(formula):
             bug_info = json.load(f)
         
         spectrum = method_level_spectrum[bug]
-        sbfl_scores = {}
+        weight_for_bug = weights[bug]
+        weighted_sbfl_scores = {}
         buggy_methods = [buggy_lines.split(':')[0] for buggy_lines in bug_info["buggy_lines"]]
         for method, spectra in spectrum.items():
             try:
-                sbfl_scores[method] = sbfl_scores[method] = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
+                sbfl_score = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
+                try:
+                    weight = weights[method]
+                except:
+                    weight = 0.3
+                weighted_sbfl_scores[method] = sbfl_score*weight
             except:
                 print(str(formula))
                 print("wrong")
 
             
-        sorted_sbfl_scores = sorted(sbfl_scores.items(), key=lambda x: x[1], reverse=True)
+        sorted_sbfl_scores = sorted(weighted_sbfl_scores.items(), key=lambda x: x[1], reverse=True)
         ranks = {method: rank+1 for rank, (method, _) in enumerate(sorted_sbfl_scores)}
         buggy_methods_ranks = [ranks[buggy_method] for buggy_method in buggy_methods]
         ranking = min(buggy_methods_ranks)        
@@ -136,3 +147,17 @@ print("sunwoo")
 print(sunwoo_acc1, sunwoo_acc3, sunwoo_acc5, sunwoo_acc10, sunwoo_wef)
 print("donghan")
 print(donghan_acc1, donghan_acc3, donghan_acc5, donghan_acc10, donghan_wef)
+print("-----------------Our Approach--------------------------------------")
+
+weighted_trantula_acc1, weighted_trantula_acc3, weighted_trantula_acc5, weighted_trantula_acc10, weighted_trantula_wef = evaluate_weighted_formula(trantula)
+weighted_ochiai_acc1, weighted_ochiai_acc3, weighted_ochiai_acc5, weighted_ochiai_acc10, weighted_ochiai_wef = evaluate_weighted_formula(ochiai)
+weighted_jaccard_acc1, weighted_jaccard_acc3, weighted_jaccard_acc5, weighted_jaccard_acc10, weighted_jaccard_wef = evaluate_weighted_formula(jaccard)
+weighted_naryeong_acc1, weighted_naryeong_acc3, weighted_naryeong_acc5, weighted_naryeong_acc10, weighted_naryeong_wef = evaluate_weighted_formula(naryeong)
+weighted_sunwoo_acc1, weighted_sunwoo_acc3, weighted_sunwoo_acc5, weighted_sunwoo_acc10, weighted_sunwoo_wef = evaluate_weighted_formula(sunwoo)
+weighted_donghan_acc1, weighted_donghan_acc3, weighted_donghan_acc5, weighted_donghan_acc10, weighted_donghan_wef = evaluate_weighted_formula(donghan)
+print(weighted_trantula_acc1, weighted_trantula_acc3, weighted_trantula_acc5, weighted_trantula_acc10, weighted_trantula_wef)
+print(weighted_ochiai_acc1, weighted_ochiai_acc3, weighted_ochiai_acc5, weighted_ochiai_acc10, weighted_ochiai_wef)
+print(weighted_jaccard_acc1, weighted_jaccard_acc3, weighted_jaccard_acc5, weighted_jaccard_acc10, weighted_jaccard_wef)
+print(weighted_naryeong_acc1, weighted_naryeong_acc3, weighted_naryeong_acc5, weighted_naryeong_acc10, weighted_naryeong_wef)
+print(weighted_sunwoo_acc1, weighted_sunwoo_acc3, weighted_sunwoo_acc5, weighted_sunwoo_acc10, weighted_sunwoo_wef)
+print(weighted_donghan_acc1, weighted_donghan_acc3, weighted_donghan_acc5, weighted_donghan_acc10, weighted_donghan_wef)
