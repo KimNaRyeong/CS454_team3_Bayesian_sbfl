@@ -23,46 +23,32 @@ def parse_node_format(node):
 
     until_class = '$'.join(without_digit_parsed_until_class)
 
-    packages = ".".join(until_class.split(".")[:-1])
-    class_name = until_class.split(".")[-1]
-    formated_until_class = packages+"$"+class_name
+    if method.startswith("void <init>"):
+        if '$' in until_class:
+            before_dol = until_class.split("$")[0]
+            second_class = until_class.split("$")[-1]
+            first_class = before_dol.split('.')[-1]
+            package = ".".join(before_dol.split('.')[:-1])
+            argument = method.split("void <init>")[-1]
 
-    method = method.split()[-1]
-    formated_method = formated_until_class+'#'+method
+            formated_method = package+'$'+first_class+'$'+second_class+'#'+first_class+'$'+second_class+argument
+            
+        else:
+            package = ".".join(until_class.split('.')[:-1])
+            class_name = until_class.split('.')[-1]
+            argument = method.split("void <init>")[-1]
 
+            formated_method = package + '$' + class_name + '#' + class_name + argument
+            
+    
+    else:
+        packages = ".".join(until_class.split(".")[:-1])
+        class_name = until_class.split(".")[-1]
+        formated_until_class = packages+"$"+class_name
 
+        method = method.split()[-1]
+        formated_method = formated_until_class+'#'+method
 
-    # print(formated_method)
-
-    # if '$' in node and (node.startswith('org.jfree.data') or node.startswith('org.jfree.chart')):
-    #     print(node)
-                        
-    # if "<" in node and ">" in node:
-    #     # Remove only the outermost < and >
-    #     node = re.sub(r"^<+|>+$", "", node)
-
-    #     # Split the node into parts by ':' or '#'
-    #     if ":" in node:
-    #         class_part, method_part = node.split(":", 1)
-    #     elif "#" in node:
-    #         class_part, method_part = node.split("#", 1)
-    #     else:
-    #         class_part, method_part = node, ""
-
-    #     # Extract the method name (last word)
-    #     method_name = method_part.split()[-1].strip()  # Remove spaces
-
-    #     # Replace the third '.' with '$'
-    #     parts = class_part.split(".")
-    #     if len(parts) > 3:
-    #         # Join the first 3 parts with '.', then append the rest with '$' inserted
-    #         formatted_class = ".".join(parts[:3]) + "$" + ".".join(parts[3:])
-    #     else:
-    #         formatted_class = class_part  # If less than 3 parts, no change
-
-    #     # Construct the formatted node
-    #     formatted_node = f"{formatted_class}#{method_name}"
-    #     return formatted_node
     return formated_method
 
 
