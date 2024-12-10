@@ -191,6 +191,6 @@ def add_metrics_to_spectrum_separately(input_file, output_dir, bayesian_networks
 # File paths
 input_file = './method_level_spectrums.json'
 output_dir = './metric_value_json_output'  # Directory to store individual metric files
-bayesian_networks_folder = './bayesian_networks_old'
+bayesian_networks_folder = './bayesian_networks'
 # Add metrics to the spectrum data and save to separate files
 add_metrics_to_spectrum_separately(input_file, output_dir, bayesian_networks_folder)

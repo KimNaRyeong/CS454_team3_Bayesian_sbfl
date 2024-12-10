@@ -1,15 +1,15 @@
 digraph G {
-  "org.apache.commons.lang3$LocaleUtils#availableLocaleList()" -> "org.apache.commons.lang3$LocaleUtils$SyncAvoid#<clinit>()";
-  "org.apache.commons.lang3$LocaleUtils#languagesByCountry(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils#availableLocaleList()";
-  "org.apache.commons.lang3$LocaleUtils#languagesByCountry(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils#<clinit>()";
-  "org.apache.commons.lang3$LocaleUtils#languagesByCountry(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils$SyncAvoid#<clinit>()";
-  "org.apache.commons.lang3$LocaleUtils#countriesByLanguage(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils#availableLocaleList()";
-  "org.apache.commons.lang3$LocaleUtils#countriesByLanguage(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils#<clinit>()";
-  "org.apache.commons.lang3$LocaleUtils#countriesByLanguage(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils$SyncAvoid#<clinit>()";
-  "org.apache.commons.lang3$LocaleUtils#isAvailableLocale(java.util.Locale)" -> "org.apache.commons.lang3$LocaleUtils#availableLocaleList()";
-  "org.apache.commons.lang3$LocaleUtils#isAvailableLocale(java.util.Locale)" -> "org.apache.commons.lang3$LocaleUtils#<clinit>()";
   "org.apache.commons.lang3$LocaleUtils#isAvailableLocale(java.util.Locale)" -> "org.apache.commons.lang3$LocaleUtils$SyncAvoid#<clinit>()";
-  "org.apache.commons.lang3$LocaleUtils#localeLookupList(java.util.Locale)" -> "org.apache.commons.lang3$LocaleUtils#<clinit>()";
-  "org.apache.commons.lang3$LocaleUtils#localeLookupList(java.util.Locale)" -> "org.apache.commons.lang3$LocaleUtils#localeLookupList(java.util.Locale,java.util.Locale)";
+  "org.apache.commons.lang3$LocaleUtils#isAvailableLocale(java.util.Locale)" -> "org.apache.commons.lang3$LocaleUtils#<clinit>()";
+  "org.apache.commons.lang3$LocaleUtils#isAvailableLocale(java.util.Locale)" -> "org.apache.commons.lang3$LocaleUtils#availableLocaleList()";
+  "org.apache.commons.lang3$LocaleUtils#availableLocaleList()" -> "org.apache.commons.lang3$LocaleUtils$SyncAvoid#<clinit>()";
+  "org.apache.commons.lang3$LocaleUtils#languagesByCountry(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils$SyncAvoid#<clinit>()";
+  "org.apache.commons.lang3$LocaleUtils#languagesByCountry(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils#<clinit>()";
+  "org.apache.commons.lang3$LocaleUtils#languagesByCountry(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils#availableLocaleList()";
   "org.apache.commons.lang3$LocaleUtils#availableLocaleSet()" -> "org.apache.commons.lang3$LocaleUtils$SyncAvoid#<clinit>()";
+  "org.apache.commons.lang3$LocaleUtils#countriesByLanguage(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils$SyncAvoid#<clinit>()";
+  "org.apache.commons.lang3$LocaleUtils#countriesByLanguage(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils#<clinit>()";
+  "org.apache.commons.lang3$LocaleUtils#countriesByLanguage(java.lang.String)" -> "org.apache.commons.lang3$LocaleUtils#availableLocaleList()";
+  "org.apache.commons.lang3$LocaleUtils#localeLookupList(java.util.Locale)" -> "org.apache.commons.lang3$LocaleUtils#localeLookupList(java.util.Locale,java.util.Locale)";
+  "org.apache.commons.lang3$LocaleUtils#localeLookupList(java.util.Locale)" -> "org.apache.commons.lang3$LocaleUtils#<clinit>()";
 }
