@@ -1,0 +1,8 @@
+digraph G {
+  "m1()" [label="m1()\nP(Fail|Node)=0.00"];
+  "m2()" [label="m2()\nP(Fail|Node)=0.20"];
+  "m3()" [label="m3()\nP(Fail|Node)=1.00"];
+  "m1()" -> "m2()";
+  "m1()" -> "m3()";
+  "m2()" -> "m3()";
+}

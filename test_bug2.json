@@ -1,0 +1,12 @@
+{
+    "bug_id": "Test",
+    "failing_tests": [
+        "t5",
+        "t6",
+        "t7",
+        "t8"
+    ],
+    "buggy_lines": [
+        "m1():1"
+    ]
+}
