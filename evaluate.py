@@ -56,7 +56,8 @@ def evaluate_formula(formula):
     return acc1, acc3, acc5, acc10, sum(wefs) / len(wefs)
 
 def evaluate_weighted_formula(formula):
-    method_level_spectrum_file = './method_level_spectrums.json'
+    # method_level_spectrum_file = './method_level_spectrums.json'
+    method_level_spectrum_file = './new_spectrum.json'
     weight_file = './metric_value_json_output/bayesian.json'
 
     with open(method_level_spectrum_file, 'r') as f:
@@ -87,7 +88,8 @@ def evaluate_weighted_formula(formula):
                     weight = weight_for_bug[method]
                 except:
                     weight = 0.3
-                weighted_sbfl_scores[method] = sbfl_score*weight
+                # weighted_sbfl_scores[method] = sbfl_score*weight
+                weighted_sbfl_scores[method] = sbfl_score
             except:
                 print(str(formula))
                 print("wrong")
@@ -148,6 +150,13 @@ print(sunwoo_acc1, sunwoo_acc3, sunwoo_acc5, sunwoo_acc10, sunwoo_wef)
 print("donghan")
 print(donghan_acc1, donghan_acc3, donghan_acc5, donghan_acc10, donghan_wef)
 print("-----------------Our Approach--------------------------------------")
+
+trantula = "safe_divide(safe_divide(e_f, (e_f+n_f)), (safe_divide(e_f, (e_f+n_f))+safe_divide(e_p, (e_p+n_p))))"
+ochiai = "safe_divide(e_f, ((e_f+e_p)*(e_f+n_f)))"
+jaccard = "safe_divide(e_f, (e_f+e_p+n_f))"
+naryeong = "(e_f * (1 if e_p == 0 else e_f/e_p))"
+sunwoo = "math.sqrt(safe_divide(math.sqrt(math.sqrt(0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)))) , (1.0 + math.sqrt(0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))))"
+donghan = "((((e_f + ((n_f + 0.7) * e_f)) + n_p) * e_f) + (((1 + n_p) + e_f) + (((1 + n_p) * e_f) - (1 * p))))"
 
 weighted_trantula_acc1, weighted_trantula_acc3, weighted_trantula_acc5, weighted_trantula_acc10, weighted_trantula_wef = evaluate_weighted_formula(trantula)
 weighted_ochiai_acc1, weighted_ochiai_acc3, weighted_ochiai_acc5, weighted_ochiai_acc10, weighted_ochiai_wef = evaluate_weighted_formula(ochiai)

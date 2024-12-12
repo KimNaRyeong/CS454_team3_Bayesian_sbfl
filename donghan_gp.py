@@ -170,7 +170,7 @@ def get_nonterminal(op_name=None):
 
 
 def get_terminal():
-    return random.choice([Variable("e_f"), Variable("e_p"), Variable("n_f"), Variable("n_p"), Variable("p"), Variable("1"), Variable("2")])
+    return random.choice([Variable("e_f"), Variable("e_p"), Variable("n_f"), Variable("n_p"), Variable("p"), Variable("1"), Variable("0.7")])
 
 def get_unary(op_name=None):
     ops = {'**': SquareOp, 'sqrt': SqrtOp}
@@ -272,6 +272,7 @@ def genetic_programming():
     nf = Variable("n_f")
     ep = Variable("e_p")
     np = Variable("n_p")
+    p = Variable("p")
 
     plus1 = PlusOp()
     plus1.set_left(ef)
@@ -300,7 +301,12 @@ def genetic_programming():
     final_div = DivOp()
     final_div.set_left(div1)
     final_div.set_right(plus3)
-    populations = [final_div, ef, ep, np, nf]
+
+    leo = MinusOp()
+    leo.set_left(Variable("1"))
+    leo.set_right(p)
+
+    populations = [final_div, ep, np, nf, p, leo]
     populations += [generate_tree(MAX_TREE_DEPTH, full=(i < NUM_POPULATIONS // 2)) 
                  for i in range(NUM_POPULATIONS - len(populations))]
 
