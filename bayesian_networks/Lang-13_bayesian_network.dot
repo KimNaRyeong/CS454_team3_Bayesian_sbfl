@@ -1,0 +1,17 @@
+digraph G {
+  "org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable,java.io.OutputStream)" [label="org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable,java.io.OutputStream)\nP(Fail|Node)=0.03"];
+  "org.apache.commons.lang3$SerializationException#SerializationException(java.lang.Throwable)" [label="org.apache.commons.lang3$SerializationException#SerializationException(java.lang.Throwable)\nP(Fail|Node)=1.00"];
+  "org.apache.commons.lang3$SerializationUtils#clone(java.io.Serializable)" [label="org.apache.commons.lang3$SerializationUtils#clone(java.io.Serializable)\nP(Fail|Node)=0.00"];
+  "org.apache.commons.lang3$SerializationUtils$ClassLoaderAwareObjectInputStream#SerializationUtils$ClassLoaderAwareObjectInputStream(java.io.InputStream,java.lang.ClassLoader)" [label="org.apache.commons.lang3$SerializationUtils$ClassLoaderAwareObjectInputStream#SerializationUtils$ClassLoaderAwareObjectInputStream(java.io.InputStream,java.lang.ClassLoader)\nP(Fail|Node)=1.00"];
+  "org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable)" [label="org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable)\nP(Fail|Node)=0.00"];
+  "org.apache.commons.lang3$SerializationException#SerializationException(java.lang.String,java.lang.Throwable)" [label="org.apache.commons.lang3$SerializationException#SerializationException(java.lang.String,java.lang.Throwable)\nP(Fail|Node)=1.00"];
+  "org.apache.commons.lang3$SerializationUtils#deserialize(java.io.InputStream)" [label="org.apache.commons.lang3$SerializationUtils#deserialize(java.io.InputStream)\nP(Fail|Node)=0.00"];
+  "org.apache.commons.lang3$SerializationUtils#deserialize(byte[])" [label="org.apache.commons.lang3$SerializationUtils#deserialize(byte[])\nP(Fail|Node)=0.00"];
+  "org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable,java.io.OutputStream)" -> "org.apache.commons.lang3$SerializationException#SerializationException(java.lang.Throwable)";
+  "org.apache.commons.lang3$SerializationUtils#clone(java.io.Serializable)" -> "org.apache.commons.lang3$SerializationUtils$ClassLoaderAwareObjectInputStream#SerializationUtils$ClassLoaderAwareObjectInputStream(java.io.InputStream,java.lang.ClassLoader)";
+  "org.apache.commons.lang3$SerializationUtils#clone(java.io.Serializable)" -> "org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable)";
+  "org.apache.commons.lang3$SerializationUtils#clone(java.io.Serializable)" -> "org.apache.commons.lang3$SerializationException#SerializationException(java.lang.String,java.lang.Throwable)";
+  "org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable)" -> "org.apache.commons.lang3$SerializationUtils#serialize(java.io.Serializable,java.io.OutputStream)";
+  "org.apache.commons.lang3$SerializationUtils#deserialize(java.io.InputStream)" -> "org.apache.commons.lang3$SerializationException#SerializationException(java.lang.Throwable)";
+  "org.apache.commons.lang3$SerializationUtils#deserialize(byte[])" -> "org.apache.commons.lang3$SerializationUtils#deserialize(java.io.InputStream)";
+}
