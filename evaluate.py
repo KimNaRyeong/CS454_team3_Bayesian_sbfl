@@ -124,6 +124,7 @@ jaccard = "safe_divide(e_f, (e_f+e_p+n_f))"
 naryeong = "(e_f * (1 if e_p == 0 else e_f/e_p))"
 sunwoo = "math.sqrt(safe_divide(math.sqrt(math.sqrt(0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)))) , (1.0 + math.sqrt(0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))))"
 donghan = "(1 if 1 == 0 else ((1 if e_f == 0 else safe_divide(n_p * e_f, e_f)) * n_p) / 1) - ((n_f + e_p) + e_f)"
+jihun = "e_f * safe_divide(safe_divide((n_p * 2), (e_p + 6)), (safe_divide(n_p + e_p, e_p) + n_p))"
 
 trantula_acc1, trantula_acc3, trantula_acc5, trantula_acc10, trantula_wef = evaluate_formula(trantula)
 ochiai_acc1, ochiai_acc3, ochiai_acc5, ochiai_acc10, ochiai_wef = evaluate_formula(ochiai)
@@ -131,6 +132,7 @@ jaccard_acc1, jaccard_acc3, jaccard_acc5, jaccard_acc10, jaccard_wef = evaluate_
 naryeong_acc1, naryeong_acc3, naryeong_acc5, naryeong_acc10, naryeong_wef = evaluate_formula(naryeong)
 sunwoo_acc1, sunwoo_acc3, sunwoo_acc5, sunwoo_acc10, sunwoo_wef = evaluate_formula(sunwoo)
 donghan_acc1, donghan_acc3, donghan_acc5, donghan_acc10, donghan_wef = evaluate_formula(donghan)
+jihun_acc1, jihun_acc3, jihun_acc5, jihun_acc10, jihun_wef = evaluate_formula(jihun)
 
 print(f"Total bugs: {len(os.listdir('sootDAG_filtered'))}")
 print("acc@1, acc@3, acc@5, acc@10, wef")
@@ -147,6 +149,8 @@ print("sunwoo")
 print(sunwoo_acc1, sunwoo_acc3, sunwoo_acc5, sunwoo_acc10, sunwoo_wef)
 print("donghan")
 print(donghan_acc1, donghan_acc3, donghan_acc5, donghan_acc10, donghan_wef)
+print("jihun")
+print(jihun_acc1, jihun_acc3, jihun_acc5, jihun_acc10, jihun_wef)
 print("-----------------Our Approach--------------------------------------")
 
 weighted_trantula_acc1, weighted_trantula_acc3, weighted_trantula_acc5, weighted_trantula_acc10, weighted_trantula_wef = evaluate_weighted_formula(trantula)
@@ -155,6 +159,7 @@ weighted_jaccard_acc1, weighted_jaccard_acc3, weighted_jaccard_acc5, weighted_ja
 weighted_naryeong_acc1, weighted_naryeong_acc3, weighted_naryeong_acc5, weighted_naryeong_acc10, weighted_naryeong_wef = evaluate_weighted_formula(naryeong)
 weighted_sunwoo_acc1, weighted_sunwoo_acc3, weighted_sunwoo_acc5, weighted_sunwoo_acc10, weighted_sunwoo_wef = evaluate_weighted_formula(sunwoo)
 weighted_donghan_acc1, weighted_donghan_acc3, weighted_donghan_acc5, weighted_donghan_acc10, weighted_donghan_wef = evaluate_weighted_formula(donghan)
+weighted_jihun_acc1, weighted_jihun_acc3, weighted_jihun_acc5, weighted_jihun_acc10, weighted_jihun_wef = evaluate_weighted_formula(jihun)
 print("trantula")
 print(weighted_trantula_acc1, weighted_trantula_acc3, weighted_trantula_acc5, weighted_trantula_acc10, weighted_trantula_wef)
 print("ochiai")
@@ -167,3 +172,5 @@ print("sunsoo")
 print(weighted_sunwoo_acc1, weighted_sunwoo_acc3, weighted_sunwoo_acc5, weighted_sunwoo_acc10, weighted_sunwoo_wef)
 print("donghan")
 print(weighted_donghan_acc1, weighted_donghan_acc3, weighted_donghan_acc5, weighted_donghan_acc10, weighted_donghan_wef)
+print("jihun")
+print(weighted_jihun_acc1, weighted_jihun_acc3, weighted_jihun_acc5, weighted_jihun_acc10, weighted_jihun_wef)

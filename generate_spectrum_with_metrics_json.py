@@ -42,7 +42,7 @@ def calculate_metrics(data):
     suspiciousness_donghan = (1 if 1 == 0 else ((1 if e_f == 0 else safe_divide(n_p * e_f, e_f)) * n_p) / 1) - ((n_f + e_p) + e_f)
 
     # Jihun
-    suspiciousness_jihun = (e_p - safe_divide(e_p, (n_f + 31))) - (safe_divide(30 + e_f, e_f))
+    suspiciousness_jihun = e_f * safe_divide(safe_divide((n_p * 2), (e_p + 6)), (safe_divide(n_p + e_p, e_p) + n_p))
 
     return {
         "tarantula": tarantula,
