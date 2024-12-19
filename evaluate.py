@@ -5,13 +5,9 @@ def safe_divide(a, b):
     return a / b if b != 0 else 0
 
 def evaluate_formula(formula):
-    method_level_spectrum_file = './method_level_spectrums.json'
-    bayesian_file = './metric_value_json_output/bayesian.json'
-    with open(method_level_spectrum_file, 'r') as f:
-        method_level_spectrum = json.load(f)
-
-    with open(bayesian_file, 'r') as f:
-        bayesian_values = json.load(f)
+    method_level_spectrum_with_p_file = './new_spectrum.json'
+    with open(method_level_spectrum_with_p_file, 'r') as f:
+        spectrum_with_p = json.load(f)
     
     acc1 = 0
     acc3 = 0
@@ -24,17 +20,11 @@ def evaluate_formula(formula):
         with open(f"./bug_data/{bug}.json", 'r') as f:
             bug_info = json.load(f)
         
-        spectrum = method_level_spectrum[bug]
-        p_for_bug = bayesian_values[bug]
+        spectrum = spectrum_with_p[bug]
         sbfl_scores = {}
         buggy_methods = [buggy_lines.split(':')[0] for buggy_lines in bug_info["buggy_lines"]]
         for method, spectra in spectrum.items():
-            spectra['p'] = p_for_bug[method]
-            try:
-                sbfl_scores[method] = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
-            except:
-                print(str(formula))
-                print("wrong")
+            sbfl_scores[method] = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
 
             
         sorted_sbfl_scores = sorted(sbfl_scores.items(), key=lambda x: x[1], reverse=True)
@@ -62,13 +52,12 @@ def evaluate_formula(formula):
     return acc1, acc3, acc5, acc10, sum(wefs) / len(wefs)
 
 def evaluate_weighted_formula(formula):
-    method_level_spectrum_file = './method_level_spectrums.json'
-    weight_file = './metric_value_json_output/bayesian.json'
+    method_level_spectrum_with_p_file = './new_spectrum.json'
 
-    with open(method_level_spectrum_file, 'r') as f:
-        method_level_spectrum = json.load(f)
-    with open(weight_file, 'r') as f:
-        weights = json.load(f)
+    
+    with open(method_level_spectrum_with_p_file, 'r') as f:
+        spectrum_with_p = json.load(f)
+
 
     
     acc1 = 0
@@ -82,21 +71,13 @@ def evaluate_weighted_formula(formula):
         with open(f"./bug_data/{bug}.json", 'r') as f:
             bug_info = json.load(f)
         
-        spectrum = method_level_spectrum[bug]
-        weight_for_bug = weights[bug]
+        spectrum = spectrum_with_p[bug]
         weighted_sbfl_scores = {}
         buggy_methods = [buggy_lines.split(':')[0] for buggy_lines in bug_info["buggy_lines"]]
         for method, spectra in spectrum.items():
-            try:
-                sbfl_score = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
-                try:
-                    weight = weight_for_bug[method]
-                except:
-                    weight = 0.3
-                weighted_sbfl_scores[method] = sbfl_score*weight
-            except:
-                print(str(formula))
-                print("wrong")
+            sbfl_score = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
+            weight = spectra["p"]
+            weighted_sbfl_scores[method] = sbfl_score*(1-weight*0.7)
 
             
         sorted_sbfl_scores = sorted(weighted_sbfl_scores.items(), key=lambda x: x[1], reverse=True)
@@ -127,18 +108,10 @@ def evaluate_weighted_formula(formula):
 trantula = "safe_divide(safe_divide(e_f, (e_f+n_f)), (safe_divide(e_f, (e_f+n_f))+safe_divide(e_p, (e_p+n_p))))"
 ochiai = "safe_divide(e_f, ((e_f+e_p)*(e_f+n_f)))"
 jaccard = "safe_divide(e_f, (e_f+e_p+n_f))"
-naryeong = "(e_f * (1 if e_p == 0 else e_f/e_p))"
-sunwoo = "math.sqrt(safe_divide(math.sqrt(math.sqrt(0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)))) , (1.0 + math.sqrt(0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))))"
+naryeong = "(1 if e_f==0 else (n_p*e_f)/e_f)"
+sunwoo = "(safe_divide(math.sqrt(0.95 * 0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))), (p + math.sqrt(0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))) * safe_divide((0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)) * (0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)) + 0.21)), 0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))"
 donghan = "(1 if 1 == 0 else ((1 if e_f == 0 else safe_divide(n_p * e_f, e_f)) * n_p) / 1) - ((n_f + e_p) + e_f)"
-jihun = "e_f * safe_divide(safe_divide((n_p * 2), (e_p + 6)), (safe_divide(n_p + e_p, e_p) + n_p))"
-
-
-bayesian_nr = "(1 if e_f == 0 else ((n_p * p) + e_f)/e_f)"
-bnr_acc1, bnr_acc3, bnr_acc5, bnr_acc10, bnr_wef = evaluate_formula(bayesian_nr)
-
-print(bnr_acc1, bnr_acc3, bnr_acc5, bnr_acc10, bnr_wef)
-
-
+jihun = "(safe_divide(n_f, e_p) * safe_divide((e_p * e_f), e_p)) * e_f"
 
 trantula_acc1, trantula_acc3, trantula_acc5, trantula_acc10, trantula_wef = evaluate_formula(trantula)
 ochiai_acc1, ochiai_acc3, ochiai_acc5, ochiai_acc10, ochiai_wef = evaluate_formula(ochiai)
@@ -188,3 +161,23 @@ print("donghan")
 print(weighted_donghan_acc1, weighted_donghan_acc3, weighted_donghan_acc5, weighted_donghan_acc10, weighted_donghan_wef)
 print("jihun")
 print(weighted_jihun_acc1, weighted_jihun_acc3, weighted_jihun_acc5, weighted_jihun_acc10, weighted_jihun_wef)
+
+
+bayesian_nr = "(1 if e_f == 0 else ((n_p * p) + e_f)/e_f)"
+bayesian_sw = "((math.sqrt((0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)) + p)) - ((0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p)) + p) + math.sqrt(0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))) + ((0.82 - (0.76 * p)) * 0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f))))"
+bayesian_dh = "((((e_f + ((n_f + 0.7) * e_f)) + n_p) * e_f) + (((1 + n_p) + e_f) + (((1 + n_p) * e_f) - (1 * p))))"
+bayesian_jh = "((safe_divide(e_f, (safe_divide((e_f * (e_p + safe_divide(e_p, (n_f * p)))), p) + safe_divide(e_f, e_p))) + safe_divide(e_p, n_p)) * safe_divide(e_f, e_p))"
+
+bnr_acc1, bnr_acc3, bnr_acc5, bnr_acc10, bnr_wef = evaluate_formula(bayesian_nr)
+bsw_acc1, bsw_acc3, bsw_acc5, bsw_acc10, bsw_wef = evaluate_formula(bayesian_sw)
+bdh_acc1, bdh_acc3, bdh_acc5, bdh_acc10, bdh_wef = evaluate_formula(bayesian_dh)
+bjh_acc1, bjh_acc3, bjh_acc5, bjh_acc10, bjh_wef = evaluate_formula(bayesian_jh)
+
+print("----------------------------------GP version-----------------------------------------")
+# print(bnr_acc1, bnr_acc3, bnr_acc5, bnr_acc10, bnr_wef)
+print("Sunwoo")
+print(bsw_acc1, bsw_acc3, bsw_acc5, bsw_acc10, bsw_wef)
+# print(bdh_acc1, bdh_acc3, bdh_acc5, bdh_acc10, bdh_wef)
+print("jihun")
+print(bjh_acc1, bjh_acc3, bjh_acc5, bjh_acc10, bjh_wef)
+
