@@ -6,8 +6,12 @@ def safe_divide(a, b):
 
 def evaluate_formula(formula):
     method_level_spectrum_file = './method_level_spectrums.json'
+    bayesian_file = './metric_value_json_output/bayesian.json'
     with open(method_level_spectrum_file, 'r') as f:
         method_level_spectrum = json.load(f)
+
+    with open(bayesian_file, 'r') as f:
+        bayesian_values = json.load(f)
     
     acc1 = 0
     acc3 = 0
@@ -21,9 +25,11 @@ def evaluate_formula(formula):
             bug_info = json.load(f)
         
         spectrum = method_level_spectrum[bug]
+        p_for_bug = bayesian_values[bug]
         sbfl_scores = {}
         buggy_methods = [buggy_lines.split(':')[0] for buggy_lines in bug_info["buggy_lines"]]
         for method, spectra in spectrum.items():
+            spectra['p'] = p_for_bug[method]
             try:
                 sbfl_scores[method] = eval(str(formula), {"safe_divide": safe_divide, "math": math}, spectra)
             except:
@@ -125,6 +131,14 @@ naryeong = "(e_f * (1 if e_p == 0 else e_f/e_p))"
 sunwoo = "math.sqrt(safe_divide(math.sqrt(math.sqrt(0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)))) , (1.0 + math.sqrt(0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))))"
 donghan = "(1 if 1 == 0 else ((1 if e_f == 0 else safe_divide(n_p * e_f, e_f)) * n_p) / 1) - ((n_f + e_p) + e_f)"
 jihun = "e_f * safe_divide(safe_divide((n_p * 2), (e_p + 6)), (safe_divide(n_p + e_p, e_p) + n_p))"
+
+
+bayesian_nr = "(1 if e_f == 0 else ((n_p * p) + e_f)/e_f)"
+bnr_acc1, bnr_acc3, bnr_acc5, bnr_acc10, bnr_wef = evaluate_formula(bayesian_nr)
+
+print(bnr_acc1, bnr_acc3, bnr_acc5, bnr_acc10, bnr_wef)
+
+
 
 trantula_acc1, trantula_acc3, trantula_acc5, trantula_acc10, trantula_wef = evaluate_formula(trantula)
 ochiai_acc1, ochiai_acc3, ochiai_acc5, ochiai_acc10, ochiai_wef = evaluate_formula(ochiai)
