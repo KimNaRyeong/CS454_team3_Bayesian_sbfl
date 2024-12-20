@@ -108,9 +108,9 @@ def evaluate_weighted_formula(formula):
 trantula = "safe_divide(safe_divide(e_f, (e_f+n_f)), (safe_divide(e_f, (e_f+n_f))+safe_divide(e_p, (e_p+n_p))))"
 ochiai = "safe_divide(e_f, ((e_f+e_p)*(e_f+n_f)))"
 jaccard = "safe_divide(e_f, (e_f+e_p+n_f))"
-naryeong = "(1 if e_f==0 else (n_p*e_f)/e_f)"
-sunwoo = "(safe_divide(math.sqrt(0.95 * 0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))), (p + math.sqrt(0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))) * safe_divide((0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)) * (0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)) + 0.21)), 0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))"
-donghan = "(1 if 1 == 0 else ((1 if e_f == 0 else safe_divide(n_p * e_f, e_f)) * n_p) / 1) - ((n_f + e_p) + e_f)"
+naryeong = "((1 if n_p == 0 else (e_f * n_p)/n_p) + (e_f * n_p))"
+sunwoo = "safe_divide(math.sqrt(0.95 * safe_divide(e_p, e_p + n_p)), (0.5 * math.sqrt(safe_divide(e_p, e_p + n_p)))) * safe_divide((safe_divide(e_f, e_f + n_f) * safe_divide(e_f, e_f + n_f)), safe_divide(e_p, e_p + n_p))"
+donghan = "(((n_p * e_f) * e_f) - (n_p * (e_f - e_f)))"
 jihun = "(safe_divide(n_f, e_p) * safe_divide((e_p * e_f), e_p)) * e_f"
 
 trantula_acc1, trantula_acc3, trantula_acc5, trantula_acc10, trantula_wef = evaluate_formula(trantula)
@@ -163,9 +163,9 @@ print("jihun")
 print(weighted_jihun_acc1, weighted_jihun_acc3, weighted_jihun_acc5, weighted_jihun_acc10, weighted_jihun_wef)
 
 
-bayesian_nr = "(1 if e_f == 0 else ((n_p * p) + e_f)/e_f)"
+bayesian_nr = "(p + ((e_f * n_p) * n_p))"
 bayesian_sw = "((math.sqrt((0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f)) + p)) - ((0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p)) + p) + math.sqrt(0.0 if (e_p + n_p) == 0 else safe_divide(e_p, (e_p + n_p))))) + ((0.82 - (0.76 * p)) * 0.0 if (e_f + n_f) == 0 else safe_divide(e_f, (e_f + n_f))))"
-bayesian_dh = "((((e_f + ((n_f + 0.7) * e_f)) + n_p) * e_f) + (((1 + n_p) + e_f) + (((1 + n_p) * e_f) - (1 * p))))"
+bayesian_dh = "((e_p * e_f) - (n_p * (((p - 1) * e_f) - (2 * e_f))))"
 bayesian_jh = "((safe_divide(e_f, (safe_divide((e_f * (e_p + safe_divide(e_p, (n_f * p)))), p) + safe_divide(e_f, e_p))) + safe_divide(e_p, n_p)) * safe_divide(e_f, e_p))"
 
 bnr_acc1, bnr_acc3, bnr_acc5, bnr_acc10, bnr_wef = evaluate_formula(bayesian_nr)
@@ -174,10 +174,12 @@ bdh_acc1, bdh_acc3, bdh_acc5, bdh_acc10, bdh_wef = evaluate_formula(bayesian_dh)
 bjh_acc1, bjh_acc3, bjh_acc5, bjh_acc10, bjh_wef = evaluate_formula(bayesian_jh)
 
 print("----------------------------------GP version-----------------------------------------")
-# print(bnr_acc1, bnr_acc3, bnr_acc5, bnr_acc10, bnr_wef)
+print("Naryeong")
+print(bnr_acc1, bnr_acc3, bnr_acc5, bnr_acc10, bnr_wef)
 print("Sunwoo")
 print(bsw_acc1, bsw_acc3, bsw_acc5, bsw_acc10, bsw_wef)
-# print(bdh_acc1, bdh_acc3, bdh_acc5, bdh_acc10, bdh_wef)
+print("donghan")
+print(bdh_acc1, bdh_acc3, bdh_acc5, bdh_acc10, bdh_wef)
 print("jihun")
 print(bjh_acc1, bjh_acc3, bjh_acc5, bjh_acc10, bjh_wef)
 

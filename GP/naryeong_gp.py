@@ -13,16 +13,11 @@ NUM_SAMPLE_BUGS = 50
 # NUM_GENERATIONS = 1
 # NUM_ELITES = 2
 # NUM_SAMPLE_BUGS = 5
-spectrum_file = './method_level_spectrums.json'
-bayesian_file = '../metric_value_json_output/bayesian.json'
+spectrum_with_p_file = '../new_spectrum.json'
 
-with open(spectrum_file, 'r') as f:
+with open(spectrum_with_p_file, 'r') as f:
     method_level_spectrum = json.load(f)
 
-with open(bayesian_file, 'r') as f:
-    bayesian_values = json.load(f)
-
-all_bugs = list(method_level_spectrum.keys())
 
 class Node:
     def __init__(self, name):
@@ -230,12 +225,11 @@ def compute_fitness(individual):
     # if individual == None:
     #     print("None....")
     expenses = []
+    all_bugs = [file.split('_')[0] for file in os.listdir('../sootDAG_filtered')]
     sample_bugs = random.choices(all_bugs, k=NUM_SAMPLE_BUGS)
 
     for bug in sample_bugs:
         spectrum = method_level_spectrum[bug]
-
-        p_for_bug = bayesian_values[bug]
 
         with open(f"../bug_data/{bug}.json", 'r') as f:
             bug_info = json.load(f)
@@ -243,9 +237,7 @@ def compute_fitness(individual):
         sbfl_scores = {}
         buggy_methods = [buggy_lines.split(':')[0] for buggy_lines in bug_info["buggy_lines"]]
         for method, spectra in spectrum.items():
-                # print(method, spectra)
-                spectra["p"] = p_for_bug[method]
-                sbfl_scores[method] = eval(str(individual), {}, spectra)
+            sbfl_scores[method] = eval(str(individual), {}, spectra)
 
                 
         # print(sbfl_scores)
@@ -311,13 +303,10 @@ def evaluate_formula(formula):
             bug_info = json.load(f)
         
         spectrum = method_level_spectrum[bug]
-        p_for_bug = bayesian_values[bug]
         
         sbfl_scores = {}
         buggy_methods = [buggy_lines.split(':')[0] for buggy_lines in bug_info["buggy_lines"]]
         for method, spectra in spectrum.items():
-            # print(method, spectra)
-            spectra["p"] = p_for_bug[method]
             sbfl_scores[method] = eval(str(formula), {}, spectra)
 
             
